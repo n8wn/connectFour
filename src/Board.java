@@ -63,18 +63,90 @@ public class Board {
         }
     }
 
-    public static Cell isGameWon(Board grid) {
-        return null;
+    public static Cell checkFour(Cell[][] grid, int row, int col, int direction, Cell colour) {
+        // this function checks if there is four in a row
+        //Cell start = grid[row][col];
+        if (direction == 0) { // direction 0 is diagonal
+            if ((grid[row][col] == colour) && (grid[row+1][col+1] == colour) && (grid[row+2][col+2] == colour) && (grid[row+3][col+3] == colour)) {
+                return colour;
+            }
+        } else if (direction == 1) { // diection 1 is horizontal;
+            if ((grid[row][col] == colour) && (grid[row][col+1] == colour) && (grid[row][col+2] == colour) && (grid[row][col+3] == colour)) {
+                return colour;
+            }
+        } else if (direction == 2) { // direction 2 is vertical
+            if ((grid[row][col] == colour) && (grid[row+1][col] == colour) && (grid[row+2][col] == colour) && (grid[row+3][col] == colour)) {
+                return colour;
+            }
+        } else if (direction == 3) { // anti diagonal
+            if ((grid[row][col] == colour) && (grid[row+1][col-1] == colour) && (grid[row+2][col-2] == colour) && (grid[row+3][col-3] == colour)) {
+                return colour;
+            }
+        }
+
+        return Cell.EMPTY;
+    }
+
+    public static Cell isGameWon(Board board)
+    {
+        Cell[][] grid = board.getGrid();
+
+        // diagonal - needs both bounds restricted
+        for (int i = 0; i < ROWS - 3; i++) {
+            for (int j = 0; j < COLS - 3; j++) {
+                if (checkFour(grid, i, j, 0, Cell.Y) == Cell.Y) {
+                    return Cell.Y;
+                } else if (checkFour(grid, i, j, 0, Cell.R) == Cell.R) {
+                    return Cell.R;
+                }
+            }
+        }
+        // horizontal - i can go full ROWS, j restricted to COLS - 3
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS - 3; j++) {
+                if (checkFour(grid, i, j, 1, Cell.Y) == Cell.Y) {
+                    return Cell.Y;
+                } else if (checkFour(grid, i, j, 1, Cell.R) == Cell.R) {
+                    return Cell.R;
+                }
+            }
+        }
+        // vertical - i restricted to ROWS - 3, j can go full COLS
+        for (int i = 0; i < ROWS - 3; i++) {
+            for (int j = 0; j < COLS; j++) {
+                if (checkFour(grid, i, j, 2, Cell.Y) == Cell.Y) {
+                    return Cell.Y;
+                } else if (checkFour(grid, i, j, 2, Cell.R) == Cell.R) {
+                    return Cell.R;
+                }
+            }
+        }
+        // anti diagonal - needs both bounds restricted specially
+        for (int i = 0; i < ROWS - 3; i++) {
+            for (int j = 3; j < COLS; j++) {
+                if (checkFour(grid, i, j, 3, Cell.Y) == Cell.Y) {
+                    return Cell.Y;
+                } else if (checkFour(grid, i, j, 3, Cell.R) == Cell.R) {
+                    return Cell.R;
+                }
+            }
+        }
+
+        return Cell.EMPTY;
+    }
+
+
+    private static String cellToString(Cell cell) {
+        if (cell == Cell.R) return "R";
+        if (cell == Cell.Y) return "Y";
+        return "O";
     }
 
     public static void printBoard(Board grid) {
         for (int i = 0; i < ROWS; i++) {
-            String line = "";
+            String line = "|";
             for (int j = 0; j < COLS; j++) {
-                if (j != COLS) {
-                    line += "|" + grid.grid[i][j];
-                }
-                line += grid.grid[i][j] + "|";
+                line += cellToString(grid.grid[i][j]) + "|";
             }
             System.out.println(line);
         }
