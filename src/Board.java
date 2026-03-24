@@ -1,4 +1,6 @@
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class Board {
     private static final int ROWS = 6;
@@ -31,20 +33,6 @@ public class Board {
             }
         }
         throw new IllegalArgumentException("This column is full!");
-    }
-
-    public static boolean isRowFull(Board grid, int row) {
-        try {
-            for (int i = 0; i < COLS; i++) {
-                if (!grid.grid[row][i].equals(Cell.EMPTY)) {
-                    return false;
-                }
-            }
-
-            return true;
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
     }
 
     public static boolean isGridFull(Board grid) {
@@ -151,5 +139,41 @@ public class Board {
             System.out.println(line);
         }
         System.out.println();
+    }
+
+    public static boolean isMoveValid(Board grid, int col) {
+        // i only need to check the first row item because of how gravity in the game works, the piece will always drop to the bottom.
+        return grid.getGrid()[0][col] == Cell.EMPTY;
+    }
+
+    public static List<Integer> colsAvaliable(Board grid) {
+        List<Integer> cols = new ArrayList<>();
+        for (int i = 0; i < COLS; i++) {
+            int count = 0;
+            for (int j = 0; j < ROWS; j++) {
+                if (grid.getGrid()[j][i] != Cell.EMPTY) {
+                    count++;
+                }
+            }
+            if (count != ROWS) {
+                cols.add(i);
+            }
+        }
+        return cols;
+    }
+
+    public Board cloneBoard() {
+        Board clone = new Board();
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLS; j++) {
+                clone.grid[i][j] = this.grid[i][j];
+            }
+        }
+        return clone;
+    }
+
+    public void resetBoard() {
+        for (Cell[] row : grid)
+            Arrays.fill(row, Cell.EMPTY);
     }
 }
