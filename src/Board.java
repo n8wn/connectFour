@@ -11,26 +11,73 @@ public class Board {
             Arrays.fill(row, Cell.EMPTY);
     }
 
-    public Cell getCell(int row, int col) {
+    public static Cell getCell(Cell[][] grid, int row, int col) {
         return grid[row][col];
     }
 
-    public void setCell(int row, int col, Cell value) {
-        grid[row][col] = value;
+    public static void setCell(Board grid, int row, int col, Cell value) {
+        grid.grid[row][col] = value;
     }
 
-    public void dropCell(int row, Cell activeColour) {
-        int lowestRow = -1;
-        for (int i = 0; i < 6; i++) {
-            if (!grid[row][i].equals(Cell.EMPTY)) {
-                lowestRow = i;
-                break;
+    public Cell[][] getGrid() {
+        return grid;
+    }
+
+    public static void dropCell(Board grid, int col, Cell activeColour) {
+        for (int i = ROWS - 1; i >= 0; i--) {
+            if (grid.grid[i][col].equals(Cell.EMPTY)) {
+                grid.grid[i][col] = activeColour;
+                return;
             }
         }
+        throw new IllegalArgumentException("This column is full!");
+    }
 
-        if (lowestRow == -1) {
-            throw new IllegalArgumentException("This Row is full!");
+    public static boolean isRowFull(Board grid, int row) {
+        try {
+            for (int i = 0; i < COLS; i++) {
+                if (!grid.grid[row][i].equals(Cell.EMPTY)) {
+                    return false;
+                }
+            }
+
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-        grid[row][lowestRow+1] = activeColour;
+    }
+
+    public static boolean isGridFull(Board grid) {
+        try {
+            for (int i = 0; i < ROWS; i++) {
+                for (int j = 0; j < COLS; j++) {
+                    if (grid.grid[i][j].equals(Cell.EMPTY)) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Cell isGameWon(Board grid) {
+        return null;
+    }
+
+    public static void printBoard(Board grid) {
+        for (int i = 0; i < ROWS; i++) {
+            String line = "";
+            for (int j = 0; j < COLS; j++) {
+                if (j != COLS) {
+                    line += "|" + grid.grid[i][j];
+                }
+                line += grid.grid[i][j] + "|";
+            }
+            System.out.println(line);
+        }
+        System.out.println();
     }
 }
