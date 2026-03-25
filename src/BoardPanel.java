@@ -12,6 +12,10 @@ public class BoardPanel extends JPanel {
 
     private static Board board;
     private boolean isRedTurn = true;
+    Player playerone;
+    Player playertwo;
+    Player currentPlayer;
+
     private Cell winner = null;
     private boolean isDraw = false;
 
@@ -29,6 +33,10 @@ public class BoardPanel extends JPanel {
                 if (col < 0 || col >= COLS) return;
 
                 Cell activeColour = isRedTurn ? Cell.R : Cell.Y;
+                if (currentPlayer instanceof HumanPlayer) {
+                    ((HumanPlayer) currentPlayer).setPendingMove(col);
+                    processTurn();
+                }
                 try {
                     Board.dropCell(board, col, activeColour);
                     winner = Board.isGameWon(board);
