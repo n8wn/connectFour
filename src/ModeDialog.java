@@ -3,9 +3,9 @@ import java.awt.*;
 
 public class ModeDialog extends JDialog {
 
-    public static final int HUMAN_VS_HUMAN = 0;
-    public static final int HUMAN_VS_AI    = 1;
-    public static final int AI_VS_AI       = 2;
+    public static final int HUMAN_VS_HUMAN = 1;
+    public static final int HUMAN_VS_AI    = 2;
+    public static final int AI_VS_AI       = 3;
     public static final int CANCELLED      = -1;
 
     private int result = CANCELLED;

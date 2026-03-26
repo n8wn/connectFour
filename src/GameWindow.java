@@ -22,6 +22,7 @@ public class GameWindow extends JFrame {
         // Build players based on chosen mode
         Player playerOne;
         Player playerTwo;
+        //int difficulty = 0;
 
         switch (mode) {
             case ModeDialog.HUMAN_VS_HUMAN:
@@ -29,12 +30,16 @@ public class GameWindow extends JFrame {
                 playerTwo = new HumanPlayer(colourTwo);
                 break;
             case ModeDialog.HUMAN_VS_AI:
+                int difficulty = DifficultyDialog.show(this);
+                if (difficulty == DifficultyDialog.CANCELLED) {
+                    System.exit(0);
+                }
                 playerOne = new HumanPlayer(colourOne);
-                playerTwo = new AIPlayer(colourTwo);
+                playerTwo = new AIPlayer(colourTwo, difficulty);
                 break;
             case ModeDialog.AI_VS_AI:
-                playerOne = new AIPlayer(colourOne);
-                playerTwo = new AIPlayer(colourTwo);
+                playerOne = new AIPlayer(colourOne, 3);
+                playerTwo = new AIPlayer(colourTwo, 3);
                 break;
             default:
                 playerOne = new HumanPlayer(colourOne);

@@ -1,12 +1,25 @@
+import javax.management.relation.RelationNotFoundException;
+import java.util.List;
+import java.util.Random;
+
 public class AIPlayer implements Player {
 
     private Cell colour;
     private Cell opponentColour;
-    private static final int DEPTH = 6;
+    private int difficulty;
+    private int DEPTH;
 
-    public AIPlayer(Cell colour) {
+    public AIPlayer(Cell colour, int difficulty) {
         this.colour = colour;
         this.opponentColour = (colour == Cell.R) ? Cell.Y : Cell.R;
+        this.difficulty = difficulty;
+        if (difficulty == 1) {
+            this.DEPTH = 2;
+        } else if (difficulty == 2) {
+            this.DEPTH = 4;
+        } else if (difficulty == 3) {
+            this.DEPTH = 6;
+        }
     }
 
     @Override
@@ -20,6 +33,20 @@ public class AIPlayer implements Player {
         int bestScore = Integer.MIN_VALUE;
         long startTime = System.currentTimeMillis();
 
+        int randomNumber = (int) (Math.random() * 10); // 0 to 9
+        List<Integer> available = Board.colsAvaliable(board);
+        int randomCol = available.get((int) (Math.random() * available.size()));
+
+        if (difficulty == 1 && randomNumber < 5.5) {
+            // 55% chance - return random col
+            System.out.println("AI choose random move. (55% chance)");
+            return randomCol;
+        } else if (difficulty == 2 && randomNumber < 3) {
+            // 30% chance - return random col
+            System.out.println("AI choose random move. (30% chance)");
+            return randomCol;
+        } else {
+
         for (int col : Board.colsAvaliable(board)) {
             Board clone = board.cloneBoard();
             Board.dropCell(clone, col, colour);
@@ -28,6 +55,7 @@ public class AIPlayer implements Player {
                 bestScore = score;
                 bestCol = col;
             }
+        }
         }
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
