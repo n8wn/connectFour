@@ -162,6 +162,17 @@ public class Board {
         return cols;
     }
 
+    public static int cellsInCol(Board board, int col) {
+        Cell[][] grid = board.getGrid();
+        int count = 0;
+        for (int i = 0; i < ROWS; i++) {
+            if (grid[i][col].isFull()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public Board cloneBoard() {
         Board clone = new Board();
         for (int i = 0; i < ROWS; i++) {

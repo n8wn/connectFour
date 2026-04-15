@@ -262,5 +262,48 @@ public class AIPlayer implements Player {
     }
 
 
+    // what if at a safe point a strategic new line is places which gives points.
+    // i need a stacking metric to be able to identify how much stacking has occured
+    // has to be able to identify stacking to avoid or go for it depending on how long the user has been stacking
+    // a strategic new line would be something that creates more new opportunities while limiting the opponents progresion
 
+    // this stacking will be used in a metric to decide how many points to give and in combiation with methods to
+    // determine if a position is safe and how much stacking is occuring
+    private int stackingCount(Cell targetColour, Board board, int col) {
+        Cell[][] grid = board.getGrid();
+        // the algorithm should be:
+        // for each column, the number in it is compounded
+        // how many columns are over a certain number of cells in a column
+        int colourCount = 0;
+        for (int row = 0; row < 6; row++) {
+            if (grid[row][col] == targetColour) {
+                colourCount++;
+            }
+        }
+
+
+        // this will return a metric based on how much stacking is occuring for whichever colour is being targetted.
+        return colourCount;
+    }
+
+    private int isStacking(Cell targetColour,Board board) {
+
+        // ok so:
+        // this method counts how many rows belong to targetcounter
+        Cell opponentColour = (targetColour == Cell.R) ? (Cell.R) (Cell.Y);
+        int numberOfRows = 0;
+        for (int i = 0; i < 6; i++) {
+            if (countThreats(board, targetColour) > )
+        }
+
+        // For each column, count how many belong to targetColour
+        //Track the max concentration in any single column
+        //Track how many columns they've ignored entirely (zero pieces)
+        //Combine those into a score — heavy concentration + ignored columns = stacking detected
+
+        return 0;
+    }
+    // this method should evaluate how safe it is
+
+    // the "safe" method should work something like no threats detected.
 }
